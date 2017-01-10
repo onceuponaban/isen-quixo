@@ -81,3 +81,168 @@ void Initialisation_Grille(Grille G)
 		}
 	}
 }
+
+// Resume : Cette fonction renvoie le numéro du joueur gagnant grâce aux fonctions gagne
+// Foo : G
+// Retour : Numéro du joueur gagnant
+// Bugs :
+int Gagne(Grille G)
+{
+	int gagnant;
+	
+	if (Gagne_colonne(G) != 0)
+	{
+		gagnant = Gagne_colonne(G);
+		return (gagnant);
+		//Si on gagne par colonne on renvoie le gagnant
+	}
+	else if (Gagne_ligne(G) != 0)
+	{
+		gagnant = Gagne_ligne(G);
+		return (gagnant);
+		//Sinon si on gagne par ligne on renvoie le gagnant
+	}
+	else if (Gagne_diagonale(G) != 0)
+	{
+		gagnant = Gagne_diagonale(G);
+		return (gagnant);
+		//Sinon si on gagne par la diagonale on renvoie le gagnant
+	}
+	else if (Gagne_diagonale2(G) != 0)
+	{
+		gagnant = Gagne_diagonale2(G);
+		return (gagnant);
+		//Sinon si on gagne par la diagonale inverse on renvoie le gagnant
+	}
+		
+	return(0);
+}
+
+// Resume : Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un acolonnement sur une colonne. 
+// Foo : G
+// Retour : Numéro du joueur gagnant
+int Gagne_colonne(Grille G)
+{
+	int cube, colonne,somme;
+	
+	for(colonne = 0; colonne < TAILLE_GRILLE; colonne++)
+	{ 
+	//On regarde toutes les colonnes
+		for(cube = 0; cube < TAILLE_GRILLE; cube++)
+		{
+		//Dans la colonne, on vérifie toutes les cases
+			if( (Get(G,0,colonne) == Get(G,cube,colonne)) && (Get(G,cube,colonne) != 0) )
+			//Si la première case est égale à la case que l'on vérfie et est non nulle
+			{
+				somme = somme + 1;
+				//On incrémente la somme de marqueurs identiques
+			}
+		}
+		if (somme == TAILLE_GRILLE) 
+		{
+			//Si la somme de marqueurs requise pour gagner est atteinte
+			//On récupère la valeur du marqueur gagnant
+			return(Get(G,0,colonne)); 
+			//On retourne ce marqueur
+		}else
+		{
+			somme = 0;
+		}
+	}
+	
+	return(0);
+	//Aucun gagnant
+}
+
+// Resume : Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur une ligne. 
+// Foo : G
+// Retour : Numéro du joueur gagnant
+// Bugs :
+int Gagne_ligne(Grille G)
+{
+	int cube, ligne, somme;
+	
+	for(ligne = 0; ligne < TAILLE_GRILLE; ligne++)
+	{ 
+	//On regarde toutes les lignes
+		for(cube = 0; cube < TAILLE_GRILLE; cube++)
+		{
+		//Dans la ligne, on vérifie toutes les cases
+			if( (Get(G,ligne,0) == Get(G,ligne,cube)) && (Get(G,ligne,cube) != 0) )
+			//Si la première case est égale à la case que l'on vérfie et est non nulle
+			{
+				somme = somme + 1;
+				//On incrémente la somme de marqueurs identiques
+			}
+		}
+		if (somme == TAILLE_GRILLE) 
+		{
+			//Si la somme de marqueurs requise pour gagner est atteinte
+			//On récupère la valeur du marqueur gagnant
+			return(Get(G,ligne,0)); 
+			//On retourne ce marqueur
+		}else
+		{
+			somme = 0;
+		}
+	}
+	
+	return(0);
+	//Aucun gagnant
+}
+
+// Resume : Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur la diagonale
+// Foo : G
+// Retour : Numéro du joueur gagnant
+// Bugs :
+int Gagne_diagonale(Grille G)
+{
+	int indice,somme;
+	
+	//On regarde la diagonale 
+	for (indice = 0; indice < TAILLE_GRILLE; indice++)
+	{
+		if( (Get(G,indice,indice) == Get(G,0,0)) && (Get(G,indice,indice) != 0) )
+		{
+			somme = somme + 1;
+		}
+		//Si la case en haut à gauche est égale à la case que l'on vérfie et est non nulle
+		//On incrémente la somme de marqueurs identiques
+	}
+	if (somme == TAILLE_GRILLE)
+	{
+		return(Get(G,0,0));
+		//On retourne le numéro du joueur
+	}
+	
+	return(0);
+	//Aucun gagnant
+}
+
+// Resume : Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur la diagonale inverse
+// Foo : G
+// Retour : Numéro du joueur gagnant
+// Bugs :
+int Gagne_diagonale2(Grille G)
+{
+	int indice,somme;
+	
+	//On regarde la diagonale 
+	for (indice = TAILLE_GRILLE-1 ; indice >= 0; indice--)
+	{
+		if( (Get(G,indice,indice) == Get(G,TAILLE_GRILLE-1,TAILLE_GRILLE-1)) && (Get(G,indice,indice) != 0) )
+		{
+			somme = somme + 1;
+		}
+		//Si la case en bas à droite est égale à la case que l'on vérfie et est non nulle
+		//On incrémente la somme de marqueurs identiques
+	}
+	if (somme == TAILLE_GRILLE)
+	{
+		return(Get(G,TAILLE_GRILLE-1,TAILLE_GRILLE-1));
+		//On retourne le numéro du joueur
+	}
+	
+	return(0);
+	//Aucun gagnant
+}
