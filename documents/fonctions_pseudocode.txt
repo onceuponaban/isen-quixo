@@ -1,0 +1,108 @@
+Pseudocode pour des fonctions
+
+Gagne_colonne(Grille)
+Début
+	variables a, colonne, valeur et somme
+	pour colonne de 0 à MAX-1 : //On regarde toutes les colonnes
+		pour a de 0 à MAX-1 : //Dans la colonne, on vérifie toutes les cases
+			si Grille[0][colonne] = Grille[a][colonne] != 0 //Si la première case est égale à la case que l'on vérfie et est non nulle
+			alors :
+				somme <- somme + 1 //On incrémente la somme de marqueurs identiques
+			sinon :
+				somme <- 0 //On réinitialise
+		si somme = MAX //Si la somme de marqueurs requise pour gagner est atteinte
+		alors :
+			valeur <- Grille[0][colonne]; //On récupère la valeur du marqueur gagnant
+			retour : valeur //On retourne ce marqueur
+		sinon:
+			retour : 0 //Pas de gagnant, on retourne 0
+Fin
+
+Decale_ligne_gauche(pGrille, int ligne, int indice)
+Début
+	variables echangeur, a
+	pour a de indice à MAX-2; //parcours de la ligne de gauche à droite
+		echangeur <- valeur(pGrille)[ligne][a] //valeur(pointeur) correspond à la valeur pointée par la variable "pointeur"
+		valeur(pGrille)[ligne][a] <- valeur(pGrille)[ligne][a+1] 
+		valeur(pGrille)[ligne][a+1] <- echangeur //On échange chaque valeur avec celle de droite à l'aide d'un échangeur, résultant en un décalage de 1 vers la gauche
+	retour : void
+Fin
+
+Decale_ligne_droite(pGrille, int ligne, int indice)
+Début
+	variables echangeur, a
+	pour a de indice à 1 en décrémentant; //parcours de la ligne de droite à gauche
+		echangeur <- valeur(pGrille)[ligne][a] //valeur(pointeur) correspond à la valeur pointée par la variable "pointeur"
+		valeur(pGrille)[ligne][a] <- valeur(pGrille)[ligne][a-1] 
+		valeur(pGrille)[ligne][a-1] <- echangeur //On échange chaque valeur avec celle de gauche à l'aide d'un échangeur, résultant en un décalage de 1 vers la droite
+	retour : void
+Fin
+
+Choix_haut(coord coordCase)
+Début
+	si coordCase.y = 0
+		retour : NULL //on est déjà en haut de la grille, il n'est pas possible de choisir une case plus haute
+	variable : pointeur vers coord "pCoordHaut"
+	pCoordHaut <- Allocation mémoire de la taille d'une variable de type coord
+	valeur(pCoordHaut).y <- 0
+	valeur(pCoordHaut).x <- coordCase.x
+	retour : pCoordHaut
+Fin
+
+init_coord_grille(tabcase *ptabcase)
+Début
+	variables : i,j
+	//On commence par calculer les coins de la grille
+	xMin <- ... //abscisse minimum de la grille
+	yMin <- ... //ordonnée minimum de la grille
+	xMax <- ... //abscisse maximum de la grille
+	yMax <- ... //ordonnée maximum de la grille
+	pour i de 0 à MAX-1 : //On calcule maintenant les coordonnées des quatres points de chaque case de la grille
+		pour j de 0 à MAX-1 :
+			valeur(ptabcase)[i][j].x1 <- xMin + (j*((xMax-xMin)/5))
+			valeur(ptabcase)[i][j].y1 <- yMax - ((i+1)*((yMax-yMin)/5))
+			valeur(ptabcase)[i][j].x2 <- xMin + ((j+1)*((xMax-xMin)/5))
+			valeur(ptabcase)[i][j].y2 <- yMax - ((i+1)*((yMax-yMin)/5))
+			valeur(ptabcase)[i][j].x3 <- xMin + (j*((xMax-xMin)/5))
+			valeur(ptabcase)[i][j].y3 <- yMax - (i*((yMax-yMin)/5))
+			valeur(ptabcase)[i][j].x4 <- xMin + ((j+1)*((xMax-xMin)/5))
+			valeur(ptabcase)[i][j].y4 <- yMax - (i*((yMax-yMin)/5))
+Fin
+
+detecte_case_clic (int xMin, int yMin, int xMax, int yMax, int abs, int ord)
+Début
+	si abs < xMin ou abs > xMax ou ord < yMin ou ord > yMax
+		retour : NULL //Le clic a été fait en dehors de la grille. On ignore.
+	variables : i, j, coordoX, coordoY
+	variable : pointeur vers coord "pCoordClic"
+	pCoordClic <- Allocation mémoire de la taille d'une variable de type coord //On crée la structure dont on retournera le pointeur
+	xTraitement = abs - xMin 
+	xTraitement = xTraitement * (1000/(xMax-xMin)) //On transforme les cordonnées en un nombre entre 0 et 1000 pour un traitement plus facile
+	pour i de 1 à MAX : //A l'aide d'une boucle, on identifie dans quelle colonne le joueur a cliqué.
+		si (xTraitement>=((1000/5)*(i-1)) et xTraitement<((1000/5)*(i)))
+		{
+			coordoX <- i-1;
+		}
+	valeur(pCoordClic).x <- coordoX //On stocke la colonne trouvée dans la structure
+	yTraitement = ord - yMin //On répète l'opération avec la coordonnée de la ligne
+	yTraitement = yTraitement * (1000/(yMax-yMin))
+	pour i de 1 à MAX :
+		si (yTraitement>=((1000/5)*(i-1)) et yTraitement<((1000/5)*(i)))
+		{
+			coordoY <- i-1;
+		}
+	valeur(pCoordClic).y <- coordoY
+	retour : pCoordClic
+Fin
+
+croix (tabcase *ptabcase, coord CoordClic)
+Début
+	variable : offset
+	offset <- 5
+	x1Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].x1 + offset
+	y1Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].y1 + offset
+	x2Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].x4 - offset
+	y2Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].y4 - offset
+	ligne(x1Ligne,y1Ligne,x2Ligne,y2Ligne)
+	retour : void
+Fin
