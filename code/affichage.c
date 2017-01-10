@@ -55,27 +55,39 @@ void Affiche_Grille(Grille G)
 	int indiceligne;
 	int indicecol;
 
-	printf("\t   ");
+	printf("\n");
 
-	for (indiceligne = 0; indiceligne < TAILLE_GRILLE; indiceligne = indiceligne + 1)
+	for (indicecol = 0; indicecol < TAILLE_GRILLE; indicecol++)
 	{
-		printf("%d",indiceligne);
-		printf(" ");
+		printf("\t\t%d",indicecol);
      }
 
-	printf("\n");
+	printf("\n \n");
 	indiceligne = 0;
+	printf("\t\b|----------------|---------------|---------------|---------------|---------------|\n");
+	printf("       |                |               |               |               |               |\n");
+	printf("       |                |               |               |               |               |\n");
 
 	for (indiceligne = 0; indiceligne < TAILLE_GRILLE; indiceligne = indiceligne + 1)
 	{
-		printf("\t");
 		printf("%d",indiceligne);
-		printf(" |");
+		printf("      |      ");
 		for (indicecol = 0; indicecol < TAILLE_GRILLE; indicecol = indicecol + 1)
 		{
-			printf("%c",Convertisseur_Symbole( Get(G,indiceligne,indicecol) ) );
-			printf("|");
+
+
+			printf("  %c",Convertisseur_Symbole( Get(G,indiceligne,indicecol) ) );
+			printf("       |     ");
+
 		}
 		printf("\n");
+		for (int i = 0 ; i < 2 ; i ++ ){
+		printf("       |                |               |               |               |               |\n");
+		}
+		printf("\t\b|----------------|---------------|---------------|---------------|---------------|\n");
+		for(int i=0 ; i<2 ; i++){
+		printf("       |                |               |               |               |               |\n");
+		}
      }
+
 }
