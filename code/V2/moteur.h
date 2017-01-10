@@ -19,7 +19,20 @@ int Get(Grille,int,int);
 //Cette fonction récupère la valeur de la grille aux coordonnées données.
 
 void Initialisation_Grille (Grille);
-//Cette fonction initialise la grille
+//Cette fonction initialise la grille.
 
+int Gagne(Grille);
+//Cette fonction renvoie le numéro du joueur gagnant grâce aux fonctions ci-dessous.
 
+int Gagne_colonne(Grille);
+//Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur une colonne. 
+
+int Gagne_ligne(Grille);
+//Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur une ligne.
+
+int Gagne_diagonale(Grille);
+//Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur la diagonale.
+
+int Gagne_diagonale2(Grille);
+//Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur la diagonale inverse. 
 
