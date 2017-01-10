@@ -54,6 +54,7 @@ void Affiche_Grille(Grille G)
 {
 	int indiceligne;
 	int indicecol;
+	int i;
 
 	printf("\n");
 
@@ -81,11 +82,12 @@ void Affiche_Grille(Grille G)
 
 		}
 		printf("\n");
-		for (int i = 0 ; i < 2 ; i ++ ){
+		
+		for ( i = 0 ; i < 2 ; i ++ ){
 		printf("       |                |               |               |               |               |\n");
 		}
 		printf("\t\b|----------------|---------------|---------------|---------------|---------------|\n");
-		for(int i=0 ; i<2 ; i++){
+		for( i=0 ; i<2 ; i++){
 		printf("       |                |               |               |               |               |\n");
 		}
      }
