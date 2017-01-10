@@ -98,11 +98,18 @@ Fin
 croix (tabcase *ptabcase, coord CoordClic)
 Début
 	variable : offset
-	offset <- 5
+	offset <- 5 //Cette valeur permet de rendre la croix plus petite dans la case dans le calcul des coordonnées.
+	//On calcule les coordonnées de la croix à partir du tableau de coordonnées et de l'offset
 	x1Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].x1 + offset
 	y1Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].y1 + offset
-	x2Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].x4 - offset
-	y2Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].y4 - offset
-	ligne(x1Ligne,y1Ligne,x2Ligne,y2Ligne)
+	x2Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].x2 - offset
+	y2Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].y2 + offset
+	x3Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].x3 + offset
+	y3Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].y3 - offset
+	x4Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].x4 - offset
+	y4Ligne <- valeur(ptabcase)[CoordClic.x][CoordClic.y].y4 - offset
+	//Avec les coordonnées, on trace deux lignes résultant en une croix. Note: il faut également définir l'épaisseur du trait et la couleur.
+	ligne(x1Ligne,y1Ligne,x4Ligne,y4Ligne)
+	ligne(x2Ligne,y2Ligne,x3Ligne,y3Ligne)
 	retour : void
 Fin
