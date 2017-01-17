@@ -7,7 +7,7 @@
 
 //------------------------PROTOTYPE DE L'AFFICHAGE EN MODE CONSOLE--------------------------------------
 
-char Convertiseur_Pion(int);
+char Convertisseur_Symbole(int);
 //Gère l’affichage des symboles sur la grille. ex : 1 est en réalité X sur la grille
 
 void Affiche_Grille(Grille);
