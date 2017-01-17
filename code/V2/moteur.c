@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "moteur.h"
-#include "affichage.h"
 #include "GfxLib.h"
 
 // Resume : Cette fonction gère le cas d’erreur où la valeur n’est pas une coordonnée de la grille.
@@ -123,7 +122,8 @@ int Gagne(Grille G)
 // Retour : Numéro du joueur gagnant
 int Gagne_colonne(Grille G)
 {
-	int cube, colonne,somme;
+	int cube,colonne,somme;
+	somme = 0;
 	
 	for(colonne = 0; colonne < TAILLE_GRILLE; colonne++)
 	{ 
@@ -138,16 +138,16 @@ int Gagne_colonne(Grille G)
 				//On incrémente la somme de marqueurs identiques
 			}
 		}
-		if (somme == TAILLE_GRILLE) 
-		{
-			//Si la somme de marqueurs requise pour gagner est atteinte
-			//On récupère la valeur du marqueur gagnant
-			return(Get(G,0,colonne)); 
-			//On retourne ce marqueur
-		}else
-		{
-			somme = 0;
-		}
+	}
+	if (somme != TAILLE_GRILLE) 
+	{
+		//Si la somme de marqueurs requise pour gagner est atteinte
+		//On récupère la valeur du marqueur gagnant
+		return(Get(G,0,colonne)); 
+		//On retourne ce marqueur
+	}else
+	{
+		somme = 0;
 	}
 	
 	return(0);
@@ -161,6 +161,7 @@ int Gagne_colonne(Grille G)
 int Gagne_ligne(Grille G)
 {
 	int cube, ligne, somme;
+	somme = 0;
 	
 	for(ligne = 0; ligne < TAILLE_GRILLE; ligne++)
 	{ 
@@ -175,16 +176,16 @@ int Gagne_ligne(Grille G)
 				//On incrémente la somme de marqueurs identiques
 			}
 		}
-		if (somme == TAILLE_GRILLE) 
-		{
-			//Si la somme de marqueurs requise pour gagner est atteinte
-			//On récupère la valeur du marqueur gagnant
-			return(Get(G,ligne,0)); 
-			//On retourne ce marqueur
-		}else
-		{
-			somme = 0;
-		}
+	}
+	if (somme == TAILLE_GRILLE) 
+	{
+		//Si la somme de marqueurs requise pour gagner est atteinte
+		//On récupère la valeur du marqueur gagnant
+		return(Get(G,ligne,0)); 
+		//On retourne ce marqueur
+	}else
+	{
+		somme = 0;
 	}
 	
 	return(0);
@@ -198,6 +199,7 @@ int Gagne_ligne(Grille G)
 int Gagne_diagonale(Grille G)
 {
 	int indice,somme;
+	somme = 0;
 	
 	//On regarde la diagonale 
 	for (indice = 0; indice < TAILLE_GRILLE; indice++)
@@ -226,6 +228,7 @@ int Gagne_diagonale(Grille G)
 int Gagne_diagonale2(Grille G)
 {
 	int indice,somme;
+	somme = 0;
 	
 	//On regarde la diagonale 
 	for (indice = TAILLE_GRILLE-1 ; indice >= 0; indice--)
