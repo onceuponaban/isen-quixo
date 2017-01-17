@@ -10,7 +10,7 @@
 #include <stdbool.h>
 #include "affichage.h"
 
-int main()
+int main(void)
 {
 	static Grille Plateau;
 	
