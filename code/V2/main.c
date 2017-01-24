@@ -12,34 +12,26 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "affichage.h"
+#include <math.h>
 
-/**  \typedef  Joueur: une structure qui regroupe les infos du joueur */
-typedef struct Joueur{
-	int numero;
-	struct Joueur *suivant;
-}Joueur;
-
-/**  \typedef  pJoueur: un pointeur vers une structure de type Joueur */
-typedef struct Joueur *pJoueur;
+/**declaration globale*/
+static Grille Plateau;
+static Joueur joueur1,joueur2;
+static pJoueur pJ,pjoueur1,pjoueur2;
+static Coord selection;
 
 int main(void)
-{
-	int i =0;
-	
-	/**declaration*/
-	static Grille Plateau;
-	static Joueur j1,j2;
-	static pJoueur pJ,pj1,pj2;
-	
-	pj1 = &j1;
-	pJ = pj1;
-	pj2 = &j2;
+{	
+	/**orientation des pointeurs*/
+	pJ = &joueur1;
+	pjoueur1 = &joueur1;
+	pjoueur2 = &joueur2;
 	
 	/**remplissage structure*/
-	j1.numero = 1;
-	j1.suivant = pj2;
-	j2.numero = 2;
-	j2.suivant = pj1;
+	joueur1.numero = 1;
+	joueur1.suivant = pjoueur2;
+	joueur2.numero = 2;
+	joueur2.suivant = pjoueur1;
 	
 	printf("\n\t\t\t BIENVENUE DANS QUIXISEN \n");
 	
@@ -50,12 +42,17 @@ int main(void)
 	Affiche_Grille(Plateau);
 	printf("\n");
 	
-	for ( i = 0; i < 6 ; i++ )
+	while ( Gagne(Plateau) == 0 )
 	{
-		printf(" C'est au joueur %d de jouer\n", pJ->numero);
-		pJ = pJ->suivant;
+		printf("\n C'est au tour du joueur %d de jouer\n" , /*Joueur_actuel()*/ pJ->numero );
+		printf("\n Choix des coordonnées :\n");
+		printf("\n En X :");
+		scanf("%d", &(selection.x) );
 		
-	}		
+		printf ("Valeur : %d", selection.x);
+		
+		Joueur_suivant();
+	}
 	
 	return(0);
 }
