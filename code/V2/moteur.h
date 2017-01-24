@@ -60,3 +60,6 @@ int Gagne_diagonale2(Grille);
 
 void Joueur_suivant(void);
 /**Cette fonction permet de changer de joueur après la fin du tour.*/
+
+int Joueur_actuel(void);
+/**Cette fonction retourne l'ID du joueur actuel.*/
