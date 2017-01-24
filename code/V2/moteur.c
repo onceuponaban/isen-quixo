@@ -143,16 +143,16 @@ int Gagne(Grille G)
  */
 int Gagne_colonne(Grille G)
 {
-	int cube,colonne,somme;
+	int ligne,colonne,somme;
 	somme = 0;
 	
 	for(colonne = 0; colonne < TAILLE_GRILLE; colonne++)
 	{ 
 	/**On regarde toutes les colonnes*/
-		for(cube = 0; cube < TAILLE_GRILLE; cube++)
-		{
+		for(ligne = 0; ligne < TAILLE_GRILLE; ligne++)
+		{			
 		/**Dans la colonne, on vérifie toutes les cases*/
-			if( (Get(G,0,colonne) == Get(G,cube,colonne)) && (Get(G,cube,colonne) != 0) )
+			if( (Get(G,0,colonne) == Get(G,ligne,colonne)) && (Get(G,ligne,colonne) != 0) )
 			/**Si la première case est égale à la case que l'on vérfie et est non nulle*/
 			{
 				somme = somme + 1;
@@ -160,7 +160,7 @@ int Gagne_colonne(Grille G)
 			}
 		}
 	}
-	if (somme != TAILLE_GRILLE) 
+	if (somme == TAILLE_GRILLE) 
 	{
 		/**Si la somme de marqueurs requise pour gagner est atteinte
 		* On récupère la valeur du marqueur gagnant
