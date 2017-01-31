@@ -58,8 +58,8 @@ int Gagne_diagonale(Grille);
 int Gagne_diagonale2(Grille);
 /**Cette fonction prend en paramètre un tableau et vérifie si un joueur a gagné grâce à un alignement sur la diagonale inverse.*/ 
 
-void Joueur_suivant(void);
+void Joueur_suivant(pJoueur);
 /**Cette fonction permet de changer de joueur après la fin du tour.*/
 
-int Joueur_actuel(void);
+int Joueur_actuel(pJoueur);
 /**Cette fonction retourne l'ID du joueur actuel.*/
