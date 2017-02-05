@@ -284,21 +284,21 @@ int Gagne_diagonale2(Grille G)
 /**
  * \brief       Fonction qui permet de changer de joueur
  * \details		Elle exploite le fait que pJ est une variable globale
- * \param    	void
+ * \param    	le pointeur pJ
  * \return    	void
  */
- void Joueur_suivant(void)
+ void Joueur_suivant(pJoueur p)
  {
-	 pJ=pJ->suivant;
+	 p=p->suivant;
 	 return;
  }
 
  /**
  * \brief       Fonction qui retourne l'ID du joueur actuel
- * \param    	void
+ * \param    	le pointeur pJ
  * \return    	Un int qui correspond à l'ID du joueur actuel
  */
- int Joueur_actuel(void)
+ int Joueur_actuel(pJoueur p)
  {
-	 return pJ->numero;
+	 return (p->numero);
  }

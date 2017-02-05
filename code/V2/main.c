@@ -44,14 +44,45 @@ int main(void)
 	
 	while ( Gagne(Plateau) == 0 )
 	{
-		printf("\n C'est au tour du joueur %d de jouer\n" , /*Joueur_actuel()*/ pJ->numero );
+		printf("\n C'est au tour du joueur %d de jouer\n" , Joueur_actuel(pJ));
 		printf("\n Choix des coordonnées :\n");
-		printf("\n En X :");
-		scanf("%d", &(selection.x) );
 		
-		printf ("Valeur : %d", selection.x);
+		printf(" En X : ");
+		if (scanf("%d", &(selection.x)) != 1) 
+		{
+			printf(" Erreur prise de valeur");
+		}
+		while (Cas_Erreur(selection.x) == true)
+		{
+			printf(" Coordonnée invalide ! ");
+			printf("\n En X : ");
+			if (scanf("%d", &(selection.x)) != 1) 
+			{
+				printf(" Erreur prise de valeur");
+			}
+		}
+							
+        printf(" En Y : ");
+		if (scanf("%d", &(selection.y)) != 1) 
+		{
+			printf(" Erreur prise de valeur");
+		}
+		while (Cas_Erreur(selection.y) == true)
+		{
+			printf(" Coordonnée invalide ! ");
+			printf("\n En Y : ");
+			if (scanf("%d", &(selection.y)) != 1) 
+			{
+				printf(" Erreur prise de valeur");
+			}
+		}
 		
-		Joueur_suivant();
+		Set(Plateau,selection.x,selection.y,'*');
+		Affiche_Grille(Plateau);
+		
+		/*decale*/
+			
+		pJ=pJ->suivant;
 	}
 	
 	return(0);

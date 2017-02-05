@@ -2,7 +2,7 @@ WARNING_FLAGS = -Wall -Wextra -Werror -pedantic -Wformat\
 				-fstrict-overflow -Wstrict-overflow=5\
 				-Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes\
 				-Wmissing-prototypes -Wcast-align -pedantic-errors
-CFLAGS = -std=c99 -m64 -O3 $(WARNING_FLAGS)
+CFLAGS = -std=c99 -O3 $(WARNING_FLAGS)
 
 LFLAGS = libisentlib.a -lGL -lglut -lGLU -lm fmodapi43206linux64/api/lib/libfmodex64.so -pthread
 
