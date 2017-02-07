@@ -29,6 +29,22 @@ bool Cas_Erreur(int valeur)
 }
 
 /**
+ * \brief       Fonction de gestion d'erreur
+ * \details     Permet de savoir si la valeur est une coordonnée de l'extremité du tableau
+ * \param    	C        une strcuture coord en X,Y
+ * \return    	Un \e boll représentant si il y a une erreur (true) ou non (false)
+ */
+bool Cas_Extremite(Coord C)
+{
+	/**test du cas d'erreur*/
+	if ((C.x >= 1) && (C.y >= 1) && (C.x <= 3) && (C.y <= 3))
+	{
+		return(true);
+	}
+	else return(false);
+}
+
+/**
  * \brief       Fonction qui accéde au tableau
  * \details     Permet de placer des valeurs dans le tableau en prenant en compte les erreurs
  * \param    	G        	qui est une variable qui représente le plateau du jeu
@@ -74,6 +90,23 @@ int Get(Grille G, int coordligne, int coordcol)
 	valeur = G[coordligne][coordcol];
 
 	return(valeur);
+}
+
+/**
+ * \brief       Fonction de gestion d'erreur
+ * \details     Permet de savoir si la valeur de la case est celle du joueur qui joue;
+ * \param    	valeur        1 ou 2 suivant le joueur;
+ * 				selection     une strcuture coord en X,Y;
+ * \return    	Un \e boll représentant si il y a une erreur (true) ou non (false)
+ */
+bool Cas_Signe(Grille G, Coord selection, int valeur)
+{
+	/**test du cas d'erreur*/
+	if ((Get(G,selection.x,selection.y) != valeur) && (Get(G,selection.x,selection.y) != 0) )
+	{
+		return(true);
+	}
+	else return(false);
 }
 
 /**
@@ -302,3 +335,100 @@ int Gagne_diagonale2(Grille G)
  {
 	 return (p->numero);
  }
+
+/**
+ * \brief       Fonction qui permet de retourner les choix des décalages
+ * \details		Gère le choix du haut
+ * \param    	coordCase		qui est la selection du joueur
+ * \return    	pCoordHaut		un pointeur vers une structure Coord qui contient les coordonnées de la case où
+ * 								va se faire le décalage
+ */
+pCoord Choix_haut(Coord coordCase)
+{
+	pCoord pCoordHaut;
+	
+	if (coordCase.x == 0)
+	{
+		return(NULL); /**on est déjà en haut de la grille, il n'est pas possible de choisir une case plus haute*/
+	}
+	
+	pCoordHaut = malloc(sizeof(Coord));
+	pCoordHaut->y = coordCase.y;
+	pCoordHaut->x = 0;
+	
+	return (pCoordHaut);
+}
+
+/**
+ * \brief       Fonction qui permet de retourner les choix des décalages
+ * \details		Gère le choix du bas
+ * \param    	coordCase		qui est la selection du joueur
+ * \return    	pCoordBas		un pointeur vers une structure Coord qui contient les coordonnées de la case où
+ * 								va se faire le décalage
+ */
+pCoord Choix_bas(Coord coordCase)
+{
+	pCoord pCoordBas;
+	
+	if (coordCase.x == 4)
+	{
+		return(NULL); /**on est déjà en bas de la grille, il n'est pas possible de choisir une case plus basse*/
+	}
+	
+	pCoordBas = malloc(sizeof(Coord));
+	pCoordBas->y = coordCase.y;
+	pCoordBas->x = 4;
+	
+	return (pCoordBas);
+}
+ 
+/**
+ * \brief       Fonction qui permet de retourner les choix des décalages
+ * \details		Gère le choix de droite
+ * \param    	coordCase		qui est la selection du joueur
+ * \return    	pCoordDroite	un pointeur vers une structure Coord qui contient les coordonnées de la case où
+ * 								va se faire le décalage
+ */
+pCoord Choix_droite(Coord coordCase)
+{
+	pCoord pCoordDroite;
+	
+	if (coordCase.y == 4)
+	{
+		return(NULL); /**on est déjà à droite de la grille, il n'est pas possible de choisir une case plus à droite*/
+	}
+	
+	pCoordDroite = malloc(sizeof(Coord));
+	pCoordDroite->y = 4;
+	pCoordDroite->x = coordCase.x;
+	
+	return (pCoordDroite);
+}
+ 
+/**
+ * \brief       Fonction qui permet de retourner les choix des décalages
+ * \details		Gère le choix de gauche
+ * \param    	coordCase		qui est la selection du joueur
+ * \return    	pCoordGauche	un pointeur vers une structure Coord qui contient les coordonnées de la case où
+ * 								va se faire le décalage
+ */
+pCoord Choix_gauche(Coord coordCase)
+{
+	pCoord pCoordGauche;
+	
+	if (coordCase.y == 0)
+	{
+		return(NULL); /**on est déjà à gauche de la grille, il n'est pas possible de choisir une case plus à gauche*/
+	}
+	
+	pCoordGauche = malloc(sizeof(Coord));
+	pCoordGauche->y = 0;
+	pCoordGauche->x = coordCase.x;
+	
+	return (pCoordGauche);
+}
+ 
+ 
+ 
+ 
+ 

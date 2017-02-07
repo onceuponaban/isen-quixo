@@ -23,7 +23,7 @@ char Convertisseur_Symbole(int symbole)
 {
 	char symboleconverti;
 
-	if ((symbole < 0)||(symbole > 2))
+	if ((symbole < 0)||(symbole > 3))
 	{
 		return('?');
 	}
@@ -46,6 +46,12 @@ char Convertisseur_Symbole(int symbole)
 
 			symboleconverti = 'O';
 
+		break;
+		
+		case 3:
+		
+			symboleconverti = '*';
+		
 		break;
 	}
 

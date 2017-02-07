@@ -29,16 +29,25 @@ typedef struct Coord{
 	int y;
 }Coord;
 
+/**  \typedef  pCoord: un pointeur vers une structure de type Coord */
+typedef struct Coord *pCoord;
+
 /**------------------------PROTOTYPE DU MOTEUR EN MODE CONSOLE--------------------------------------*/
 
 bool Cas_Erreur (int);
 /**Cette fonction gère le cas d’erreur où la coordonnée (passée en paramètre) n’est pas dans la grille.*/
+
+bool Cas_Extremite(Coord);
+/**Cette fonction gère le cas d’erreur où les coordonnées (passées en paramètre) ne corrsepondent pas à une case de l'extremité de la grille.*/
 
 int Set(Grille,int,int,int);
 /**Cette fonction met la valeur dans la grille aux coordonnées données.*/
 
 int Get(Grille,int,int);
 /**Cette fonction récupère la valeur de la grille aux coordonnées données.*/
+
+bool Cas_Signe(Grille,Coord,int);
+/**Permet de savoir si la valeur de la case est celle du joueur qui joue*/
 
 void Initialisation_Grille (Grille);
 /**Cette fonction initialise la grille.*/
@@ -63,3 +72,23 @@ void Joueur_suivant(pJoueur);
 
 int Joueur_actuel(pJoueur);
 /**Cette fonction retourne l'ID du joueur actuel.*/
+
+pCoord Choix_haut(Coord);
+/**Cette fonction renvoie la case se situant le plus possible en haut de la grille par rapport à la case sélectionnée.*/
+
+pCoord Choix_bas(Coord);
+/**Cette fonction renvoie la case se situant le plus possible en bas de la grille par rapport à la case sélectionnée.*/
+
+pCoord Choix_gauche(Coord);
+/**Cette fonction renvoie la case se situant le plus possible à gauche de la grille par rapport à la case sélectionnée.*/
+
+pCoord Choix_droite(Coord);
+/**Cette fonction renvoie la case se situant le plus possible à droite de la grille par rapport à la case sélectionnée.*/
+
+
+
+
+
+
+
+
