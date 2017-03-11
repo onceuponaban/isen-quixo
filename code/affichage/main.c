@@ -13,60 +13,70 @@
 #include "affichage.h"
 #include <math.h>
 #include "ESLib.h"
+#include "BmpLib.h" // Cet include permet de manipuler des fichiers en .bmp
 
-#define LargeurFenetre 600
-#define HauteurFenetre 600
+#define LargeurFenetre 1364
+#define HauteurFenetre 589
 
-//Déclarations globales
+//Déclarations globales :
+	//variables utiles
 	int avancementpartie;
+	int largeurf,hauteurf;
+	pCoord macase;
 	
+	//le plateau de jeu en mode console
 	static Grille Plateau;
 
+	//structures qui gérent les tours et scores des joueurs
 	static Joueur joueur1,joueur2;
 	static pJoueur pJ,pjoueur1,pjoueur2;
+	
+	static DonneesImageRGB *image = NULL; // L'image du logo du jeu
+	
+	//le pointeur vers un tableau 2D de structures
+	static ptabCase ptC;
 
-	static Coord selection;
-
-	static pCoord choix1,choix2,choix3,choix4;
-	int monChoix;
-
-int main()
+int main(void)
 {
-	// Initialisation de l'acceleration graphique si elle existe
+	// Initialisation de l'accéleration graphique si elle existe
 	initialiseGfx(0, NULL);
 
-	// On ouvre la fenetre de notre application
+	// On ouvre la fenêtre de notre application
 	prepareFenetreGraphique("Quixisen !" , LargeurFenetre, HauteurFenetre);
 
-	// Lance la boucle GLUT et aiguille les evenements sur la fonction gestionEvenements ci-apres,
-	//	qui elle-meme utilise fonctionAffichage ci-dessous
+	// Lance la boucle GLUT et aiguille les évenements sur la fonction gestionEvenements ci-après,
+	//	qui elle-même utilise fonctionAffichage ci-dessous
 	lanceBoucleEvenements();
 	// On ne sort jamais de la fonction lanceBoucleEvenements, c'est pourquoi tout ce qui est
-	// ecrit ci-apres ne sera jamais execute
-	// Jamais execute, le programme se terminera ailleurs
+	// écrit ci-apres ne sera jamais executé
+	// Jamais executé, le programme se terminera ailleurs
 	ecrisChaine("Fin du main ");
 
 return(0);
 }
 
 
-// La fonction de gestion des evenements, appelee automatiquement par le systeme
-// des qu'une evenement survient.
+// La fonction de gestion des évenements, est appelé automatiquement par le systeme
+// dès qu'une évenement survient.
 void gestionEvenement(EvenementGfx evenement)
 {
-	// En fonction de l'evenement envoye par le systeme...
+	// En fonction de l'evenement envoyé par le systeme...
 	switch (evenement)
 	{
-		// Le message "Initialisation" est envoye une seule fois, au debut du programme
+		// Le message "Initialisation" est envoyé une seule fois, au debut du programme
 		// Il faut y placer tout ce qui permet d'initialiser le programme
 		case Initialisation:
-
-			//Orientation des pointeurs
 	
-			/*Ici faut mettre rand()*/
-			pJ = &joueur1;
-			pjoueur1 = &joueur1;
-			pjoueur2 = &joueur2;
+			//initialisation du logo du jeu
+			image = lisBMPRGB("logotest.bmp");
+			
+			//Allocation et orientation des pointeurs :
+			
+				ptC = malloc(sizeof(*ptC));
+				/*Ici il faut mettre un rand()*/
+				pJ = &joueur1;
+				pjoueur1 = &joueur1;
+				pjoueur2 = &joueur2;
 	
 			//remplissage structure Joueur
 			joueur1.numero = 1;
@@ -77,83 +87,124 @@ void gestionEvenement(EvenementGfx evenement)
 			printf("\n\t\t\t BIENVENUE DANS QUIXISEN \n");
 	
 			printf("\n Initialisation du plateau de jeu...\n");	
-			Initialisation_grille(Plateau);
+			Initialisation_Grille(Plateau);
+			
+			avancementpartie = 0;
+				
+		break;
 
-			break;
-
-		// Le systeme demande au programme de dessiner le fenetre
+		// Le systeme demande au programme de dessiner le fenêtre
 		case Affichage:
-
-				//Accueil graph
-				if (avancementpartie == 0)
-				{
-					//Le menu du mode graphique
-					Dessine(avancementpartie);
-				}
-
-				//Durant la partie
-				if (avancementpartie == 1)
-				{
-						//Graphique
-						effaceFenetre (0,0,0);
-						Dessin(avancementpartie);
-						Trace_pion(Plateau,tabcase);
-						Affiche_joueur(Joueur_actuel(pJ));
-
-						//Console
-						Affiche_grille(Plateau);
-						printf("\n C'est au tour du joueur %d de jouer\n" , Joueur_actuel(pJ));
-						sautDeLigne();
-				}
-
-				//Si gagnant
-				if (avancementpartie == 2)
-				{
-					    effaceFenetre (0,0,0);
-						Trace_pion(Plateau,tabcase);
-						Trace_ligne_gagnant(Plateau,tabcase);
-						avancementpartie = 0;
-						Initialisation_grille(Plateau);
-						//redessine une grille apres un certain temps pour laisser l'ultilisateur voir la ligne tracée sur l'alignement gagnant
-						//fait par la fonction Trace_ligne_gagnant
-						demandeRedessinDans_ms(950);
-				}
-
-				//Si egalite
-				if (avancementpartie == 2)
-				{
-						/*...*/
-				}
-
-			break;
-
-		case Clavier: // Une touche du clavier a ete pressee
-			switch (caractereClavier())
+		
+			if (avancementpartie == 0)
 			{
-
+				effaceFenetre (185,105,28);
+				
+				//Le menu du mode graphique :
+				Init_coord_grille(ptC);
+					
+				couleurCourante(255,255,255);
+				rectangle((*ptC)[4][0].x1-150,(*ptC)[4][0].y1-50,(*ptC)[0][4].x3+150,(*ptC)[0][4].y3+50);
+				couleurCourante(115,67,19);
+				rectangle((*ptC)[4][0].x1-142,(*ptC)[4][0].y1-42,(*ptC)[0][4].x3+142,(*ptC)[0][4].y3+42);
+				
+				//Affichage d'une image
+				if (image != NULL) // Si l'image a pu être lue
+				{
+					// On affiche l'image
+					ecrisImage((largeurFenetre()-image->largeurImage)/2, (hauteurFenetre()-image->hauteurImage)/2, image->largeurImage, image->hauteurImage, image->donneesRGB);
+				}
 			}
 
-		case BoutonSouris: // Un bouton de la souris a ete appuye
-
-			if (etatBoutonSouris() == GaucheAppuye)
+			//Au moment du choix des joueurs
+			if (avancementpartie == 1)
 			{
-				//Si on clic sur Quitter on ferme le programme (cf. Clic_Quitter dans moteur.c)
-				Clic_Quitter(abscisseSouris(), ordonneeSouris());
+				effaceFenetre (185,105,28);
+				//Le menu du mode graphique
+				Init_coord_grille(ptC);
+					
+				couleurCourante(255,255,255);
+				rectangle((*ptC)[4][0].x1-150,(*ptC)[4][0].y1-50,(*ptC)[0][4].x3+150,(*ptC)[0][4].y3+50);
+				couleurCourante(115,67,19);
+				rectangle((*ptC)[4][0].x1-142,(*ptC)[4][0].y1-42,(*ptC)[0][4].x3+142,(*ptC)[0][4].y3+42);
+					
+				Dessine_cube_grille(ptC);
+				surbrillance_choix(ptC,macase);
+				
+				//=======================pour les tests:
+					croix(ptC,0,0);
+					croix(ptC,0,4);
+				//========================================
 			}
 			
-			rafraichisFenetre();
+		break;
+		//break du case affichage
 
+		case Clavier: // Une touche du clavier a été pressée
+			switch (caractereClavier())
+			{
+				case'q':
+					exit(EXIT_SUCCESS);
+				break;
+				
+				case 'r':
+					rafraichisFenetre();
+				break;
+			}
+
+		case BoutonSouris: // Un bouton de la souris a été appuyé
+
+			if (etatBoutonSouris() == GaucheAppuye)
+			{ 
+				if (avancementpartie == 0)
+				{
+					avancementpartie = 1;
+					rafraichisFenetre();
+					break;
+				}
+				if (avancementpartie == 1)
+				{
+					macase = Detecte_case_clic(ptC,abscisseSouris(),ordonneeSouris());	
+					rafraichisFenetre();
+					break;
+				}
+			}
 			break;
-
-
-		// Les messages suivants ne sont pas traites ici
+		
+        case ClavierSpecial: //une touche spéciale du clavier a été pressée
+			switch(toucheClavier())
+			{
+				case ToucheF11:
+					if ( largeurFenetre() != 1366 && hauteurFenetre() != 663 )
+					{
+						largeurf = largeurFenetre();
+						hauteurf = hauteurFenetre();
+						//mode plein ecran pour nos machines
+						modePleinEcran(); 
+						//1366x663 pour nos machines
+					}
+					else
+						redimensionneFenetre(largeurf,hauteurf);
+				break;
+			}
+		
+		case Redimensionnement: //quand on redimensionne la fenêtre il y a ces tests
+			if ((largeurFenetre() < 600) || (hauteurFenetre() < 400))
+			{
+				redimensionneFenetre(600,400);
+			}
+			if ((largeurFenetre() > 1000) && (hauteurFenetre() < 500))
+			{
+				redimensionneFenetre(1000,666);
+			}
+		break;
+		
+		// Les messages suivants ne sont pas traités ici
 		case Inactivite:
-        	case ClavierSpecial:
 		case Souris:
-		case Redimensionnement:
-	 		 break;
-
-		 }
+		break;
 	}
+}
+
 
 

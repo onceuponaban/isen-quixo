@@ -4,28 +4,61 @@ WARNING_FLAGS = -Wall -Wextra -Werror -pedantic -Wformat\
 				-Wmissing-prototypes -Wcast-align -pedantic-errors
 CFLAGS = -std=c99 -O3 $(WARNING_FLAGS)
 
-LFLAGS = libisentlib.a -lGL -lglut -lGLU -lm fmodapi43206linux64/api/lib/libfmodex64.so -pthread
+LFLAGS = libisentlib.a -lX11 -lGL -lglut -lGLU -lm -pthread
 
 main: main.o moteur.o affichage.o libisentlib.a
-	@echo "Edition de liens"
-	gcc $(CFLAGS) main.o moteur.o affichage.o $(LFLAGS) -o main  $(CLIBS)
+	@echo "Edition de liens :"
+	gcc main.o moteur.o affichage.o -o main $(LFLAGS)
 	@echo ""
 
-main.o:	main.c moteur.h
-	@echo "Compilation module du main"
+main.o: main.c GfxLib.h BmpLib.h ESLib.h moteur.h affichage.h
+	@echo "Compilation module main :"
 	gcc $(CFLAGS) -c main.c
 	@echo ""
 
-moteur.o:	moteur.c moteur.h
-	@echo "Compilation module moteur"
+moteur.o: moteur.c moteur.h
+	@echo "Compilation module moteur :"
 	gcc $(CFLAGS) -c moteur.c
 	@echo ""
 
 affichage.o: affichage.c affichage.h
-	@echo "Compilation module affichage/graphique"
+	@echo "Compilation module affichage/graphique :"
 	gcc $(CFLAGS) -c affichage.c
 	@echo ""
 
+libisentlib.a: BmpLib.o ESLib.o GfxLib.o ErreurLib.o OutilsLib.o
+	@echo "MAJ libisentlib.a :"
+	ar r libisentlib.a BmpLib.o ESLib.o GfxLib.o ErreurLib.o OutilsLib.o
+	ranlib libisentlib.a
+	@echo ""
+
+BmpLib.o: BmpLib.c BmpLib.h OutilsLib.h
+	@echo "Compilation module BmpLib :"
+	gcc -Wall -O2 -c BmpLib.c
+	@echo ""
+
+ESLib.o: ESLib.c ESLib.h ErreurLib.h
+	@echo "Compilation module ESLib :"
+	gcc -Wall -O2 -c ESLib.c
+	@echo ""
+
+GfxLib.o: GfxLib.c GfxLib.h ESLib.h
+	@echo "Compilation module GfxLib :"
+	gcc -Wall -O2 -c GfxLib.c -I/usr/include/GL
+	@echo ""
+
+OutilsLib.o: OutilsLib.c OutilsLib.h
+	@echo "Compilation module OutilsLib :"
+	gcc -Wall -O2 -c OutilsLib.c
+	@echo ""
+
+ErreurLib.o: ErreurLib.c ErreurLib.h
+	@echo "Compilation module ErreurLib :"
+	gcc -Wall -O2 -c ErreurLib.c
+	@echo ""
+
 clean:
-	rm -f main
-	rm -f *.o
+	rm -f *~ *.o
+
+deepclean: clean
+	rm -f main libisentlib.a
