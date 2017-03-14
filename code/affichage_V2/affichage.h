@@ -5,7 +5,7 @@
  *  \brief prototypes des fonctions du module affichage.c
  */
 
-// Inclusion des fichiers d'en-tête 
+// Inclusion des fichiers d'en-tête
 #include "moteur.h"
 
 /*------------------------PROTOTYPE DE L'AFFICHAGE EN MODE CONSOLE--------------------------------------*/
@@ -38,6 +38,10 @@ void surbrillance_choix(ptabCase,pCoord);
 void Dessine_ecran_menu(ptabCase);
 /**fonction qui dessine en graphique le menu*/
 
+void disque(float, float, float);
+/** Fonction qui dessine un disque aux coordonnées données */
 
+void cercle(ptabCase, int, int);
+/** fonction qui dessine un cercle dans la case dont les coordonnées sont passés en paramètre*/
 
 

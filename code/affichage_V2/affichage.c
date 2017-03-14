@@ -47,11 +47,11 @@ char Convertisseur_Symbole(int symbole)
 			symboleconverti = 'O';
 
 		break;
-		
+
 		case 3:
-		
+
 			symboleconverti = '*';
-		
+
 		break;
 	}
 
@@ -106,16 +106,16 @@ void Dessine_cube_grille(ptabCase ptC)
 {
 	int i;
 	int j;
-	
+
 	couleurCourante(185,105,28);
-	
+
 	for (i = 0; i < TAILLE_GRILLE; i++)
 	{
 		for (j = 0; j < TAILLE_GRILLE; j++)
 		{
 			rectangle((*ptC)[i][j].x1+2,(*ptC)[i][j].y1+2,(*ptC)[i][j].x3-2,(*ptC)[i][j].y3-2);
 		}
-	}		
+	}
 }
 
 /**
@@ -130,29 +130,29 @@ void croix(ptabCase ptC, int iligne, int icolonne)
 {
 	int X1,Y1,X2,Y2;
 	int X3,Y3,X4,Y4;
-	
+
 	X1 = (*ptC)[iligne][icolonne].x4+(largeurFenetre()/15)/4;
 	Y1 = (*ptC)[iligne][icolonne].y4-(largeurFenetre()/15)/4;
 	X2 = (*ptC)[iligne][icolonne].x2-(largeurFenetre()/15)/4;
 	Y2 = (*ptC)[iligne][icolonne].y2+(largeurFenetre()/15)/4;
-	
+
 	X3 = (*ptC)[iligne][icolonne].x1+(largeurFenetre()/15)/4;
 	Y3 = (*ptC)[iligne][icolonne].y1+(largeurFenetre()/15)/4;
 	X4 = (*ptC)[iligne][icolonne].x3-(largeurFenetre()/15)/4;
 	Y4 = (*ptC)[iligne][icolonne].y4-(largeurFenetre()/15)/4;
-	
+
 	epaisseurDeTrait(8);
 	couleurCourante(255,255,255);
 	ligne(X1,Y1,X2,Y2);
-	
+
 	epaisseurDeTrait(8);
 	couleurCourante(255,255,255);
 	ligne(X3,Y3,X4,Y4);
-	
+
 	epaisseurDeTrait(5);
 	couleurCourante(0,0,0);
 	ligne(X1+1,Y1-1,X2-1,Y2+1);
-	
+
 	epaisseurDeTrait(5);
 	couleurCourante(0,0,0);
 	ligne(X3+1,Y3+1,X4-1,Y4-1);
@@ -172,20 +172,20 @@ pCoord Detecte_case_clic(ptabCase ptC, int abscisse, int ordonnee)
 	int i;
 	pCoord pCaseClic;
 	pCaseClic = malloc(sizeof(Coord));
-	
+
 	//On commence par obtenir les extrémités de la grille
 	//Choix assez arbitraire, plusieurs coordonnées pourraient correspondre. Pareil pour les autres extrémités.
 	int extGrilleHaute = (*ptC)[0][0].y4;
 	int extGrilleBasse = (*ptC)[TAILLE_GRILLE-1][0].y1;
 	int extGrilleDroite = (*ptC)[0][TAILLE_GRILLE-1].x2;
 	int extGrilleGauche = (*ptC)[0][0].x1;
-	
-	//Si on le clic n'est pas dans la grille, on renvoie le pointeur vers null
+
+	//Si le clic n'est pas dans la grille, on renvoie le pointeur vers null
 	if (abscisse < extGrilleGauche || abscisse > extGrilleDroite || ordonnee < extGrilleBasse || ordonnee > extGrilleHaute)
 	{
 		return NULL;
 	}
-	
+
 	for (i = 0; i < TAILLE_GRILLE; i = i + 1)
 	{
 		if ((*ptC)[0][i].x4 <= abscisse)
@@ -197,7 +197,7 @@ pCoord Detecte_case_clic(ptabCase ptC, int abscisse, int ordonnee)
 			pCaseClic->x = TAILLE_GRILLE-i-1;
 		}
 	}
-	
+
 	return (pCaseClic);
 }
 
@@ -206,7 +206,7 @@ pCoord Detecte_case_clic(ptabCase ptC, int abscisse, int ordonnee)
  * \details     aucun
  * \param    	ptC			car on a besoin du tableau 2D de structures
  * 				pc_case		qui est un pointeur vers une structure qui contient les coordonnées (X;Y)
- * 							de la case où l'on doit faire la surbrillance	
+ * 							de la case où l'on doit faire la surbrillance
  * \return    	\e vide
  */
 void surbrillance(ptabCase ptC, pCoord pc_case)
@@ -215,14 +215,19 @@ void surbrillance(ptabCase ptC, pCoord pc_case)
 	{
 	//couleur de la surbrillance
 	couleurCourante(205,125,48);
-		
+
 	//On traduit les coordonnées d'une case en mode (X;Y), en coordonnées graphiques pour tracer la surbrillance sur cette case
 	int xdepart = (*ptC)[pc_case->x][pc_case->y].x1+2;
 	int ydepart = (*ptC)[pc_case->x][pc_case->y].y1+2;
 	int xarrivee = (*ptC)[pc_case->x][pc_case->y].x3-2;
 	int yarrivee = (*ptC)[pc_case->x][pc_case->y].y3-2;
-		
+
 	rectangle(xdepart,ydepart,xarrivee,yarrivee);
+
+	//On dessine un deuxième rectangle de la couleur du fond
+	int distance = xarrivee-xdepart;
+	couleurCourante(185,105,28);
+	rectangle(xdepart+(distance/10),ydepart+(distance/10),xarrivee-(distance/10),yarrivee-(distance/10));
 	}
 	return;
 }
@@ -232,7 +237,7 @@ void surbrillance(ptabCase ptC, pCoord pc_case)
  * \details     Utilise les fonctions surbrillance et les fonctions de Choix
  * \param    	ptC			car on a besoin du tableau 2D de structures
  * 				macase		qui est un pointeur vers une structure qui contient les coordonnées (X;Y)
- * 							de la case où l'on doit faire la surbrillance	
+ * 							de la case où l'on doit faire la surbrillance
  * \return    	\e vide
  */
 void surbrillance_choix(ptabCase ptC, pCoord macase)
@@ -267,7 +272,7 @@ void Dessine_ecran_menu(ptabCase ptC)
 	rectangle((*ptC)[4][0].x1-150,(*ptC)[4][0].y1-50,(*ptC)[0][4].x3+150,(*ptC)[0][4].y3+50);
 	couleurCourante(115,67,19);
 	rectangle((*ptC)[4][0].x1-142,(*ptC)[4][0].y1-42,(*ptC)[0][4].x3+142,(*ptC)[0][4].y3+42);
-	
+
 	// on affiche un rectangle
 	couleurCourante(255, 255, 255); // Choix de la couleur blanche
 	rectangle(largeurFenetre()/2-90, hauteurFenetre()/2 + 10, largeurFenetre()/2 + 90, hauteurFenetre()/2 + 70);
@@ -290,7 +295,7 @@ void Dessine_ecran_menu(ptabCase ptC)
 	epaisseurDeTrait(2);
 	couleurCourante(255, 255, 255); // Choix de la couleur blanche
 	afficheChaine("R e g l e s", 17,largeurFenetre()/2- 62 , hauteurFenetre()/2 - 67);
-			
+
 	// on affiche du texte
 	epaisseurDeTrait(1);
 	couleurCourante(255, 255, 255); // Choix de la couleur blanche
@@ -301,8 +306,50 @@ void Dessine_ecran_menu(ptabCase ptC)
 	afficheChaine("Q u i t t e r", 20,(*ptC)[4][4].x2-43,(*ptC)[4][4].y2-30);
 }
 
+/**
+ * \brief       Fonction qui dessine un disque aux coordonnées données
+ * \details     Cette fonction forme une approximation de cercle à l'aide du dessin de nombreux triangles
+ * \param    	centreX			L'abscisse du centre du disque
+ * 				centreY			L'ordonnée du centre du disque
+ * 				rayon			Le rayon du disque tracé
+ * \return    	\e vide
+ */
+void disque(float centreX, float centreY, float rayon)
+{
+	float pi = 3.14159265358979323846;
+    float i;
+    float angle=0.01*pi;
+    //L'angle détermine la précision du dessin. Plus cette valeur est faible, plus le disque est précis, mais plus le dessin consomme en ressources.
+    for(i=0;i<2*pi;i=i+angle)
+    {
+        triangle(centreX,centreY,centreX+rayon*cos(i),centreY+rayon*sin(i),centreX+rayon*cos(i+angle),centreY+rayon*sin(i+angle));
+        //On dessine assez de triangles sur l'angle choisi pour former un disque
+    }
+}
 
 
-
-
-
+/**
+ * \brief       Fonction qui dessine un cercle dans la case dont les coordonnées sont passés en paramètre
+ * \details     Ces coordonnées ne sont pas des coordonnées graphiques mais celui d'un tableau
+ * 				La fonction fait appel à disque()
+ * \param    	ptC			car on a besoin du tableau 2D de structures
+ * 				iligne		coordonnée de la ligne sur un tableau
+ * 				icolonne	coordonnée de la colonne sur un tableau
+ * \return    	\e vide
+ */
+void cercle(ptabCase ptC, int iligne, int icolonne)
+{
+	int centreCaseX, centreCaseY, cercleRayon;
+	centreCaseX = ((*ptC)[iligne][icolonne].x1 + (*ptC)[iligne][icolonne].x2)/2;
+	centreCaseY = ((*ptC)[iligne][icolonne].y1 + (*ptC)[iligne][icolonne].y4)/2;
+	cercleRayon = ((*ptC)[iligne][icolonne].x2 - (*ptC)[iligne][icolonne].x1)/4 + 5;
+	//On établit les coordonnées de base de notre marqueur
+	couleurCourante(255, 255, 255);
+	disque(centreCaseX,centreCaseY,cercleRayon);
+	couleurCourante(0, 0, 0);
+	disque(centreCaseX,centreCaseY,cercleRayon-1);
+	couleurCourante(255, 255, 255);
+	disque(centreCaseX,centreCaseY,cercleRayon-6);
+	couleurCourante(185,105,28);
+	disque(centreCaseX,centreCaseY,cercleRayon-7);
+}
