@@ -5,8 +5,10 @@
  *  \brief les prototypes des fonctions du moteur.c
  */
 
-/** Inclusion des fichiers d'en-tête */
+// Inclusion des fichiers d'en-tête 
 #include <stdbool.h>
+
+/*------------------------PROTOTYPE DES DONNES--------------------------------------*/
 
 /**  \def TAILLE_GRILLE*/
 #define TAILLE_GRILLE 5
@@ -32,12 +34,31 @@ typedef struct Coord{
 /**  \typedef  pCoord: un pointeur vers une structure de type Coord */
 typedef struct Coord *pCoord;
 
-/**------------------------PROTOTYPE DU MOTEUR EN MODE CONSOLE--------------------------------------*/
+/**  \typedef  Case: une structure qui regroupe les coordonnées d'une case en mode graphique */
+typedef struct Case{
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+	int x3;
+	int y3;
+	int x4;
+	int y4;
+}Case;
+
+/**  \typedef  tabCase: Un tableau 2D de struct Case, permet de faire un lien logique entre le plateau en mode console et 
+ * le plateau en mode graphique */
+typedef Case tabCase[TAILLE_GRILLE][TAILLE_GRILLE];
+
+/**  \typedef  ptabCase: un pointeur vers un tableau tabCase */
+typedef tabCase *ptabCase;
+
+/*------------------------PROTOTYPE DU MOTEUR EN MODE CONSOLE--------------------------------------*/
 
 bool Cas_Erreur (int);
 /**Cette fonction gère le cas d’erreur où la coordonnée (passée en paramètre) n’est pas dans la grille.*/
 
-bool Cas_Extremite(Coord);
+bool Cas_Extremite(pCoord);
 /**Cette fonction gère le cas d’erreur où les coordonnées (passées en paramètre) ne corrsepondent pas à une case de l'extremité de la grille.*/
 
 int Set(Grille,int,int,int);
@@ -73,22 +94,31 @@ void Joueur_suivant(pJoueur);
 int Joueur_actuel(pJoueur);
 /**Cette fonction retourne l'ID du joueur actuel.*/
 
-pCoord Choix_haut(Coord);
+pCoord Choix_haut(pCoord);
 /**Cette fonction renvoie la case se situant le plus possible en haut de la grille par rapport à la case sélectionnée.*/
 
-pCoord Choix_bas(Coord);
+pCoord Choix_bas(pCoord);
 /**Cette fonction renvoie la case se situant le plus possible en bas de la grille par rapport à la case sélectionnée.*/
 
-pCoord Choix_gauche(Coord);
+pCoord Choix_gauche(pCoord);
 /**Cette fonction renvoie la case se situant le plus possible à gauche de la grille par rapport à la case sélectionnée.*/
 
-pCoord Choix_droite(Coord);
+pCoord Choix_droite(pCoord);
 /**Cette fonction renvoie la case se situant le plus possible à droite de la grille par rapport à la case sélectionnée.*/
 
+void Decale_ligne_gauche(Grille, Coord,int);
+/**Cette fonction gère le décalage de gauche à droite*/
 
+void Decale_ligne_droite(Grille, Coord,int);
+/**Cette fonction gère le décalage de droite à gauche*/
 
+void Decale_colonne_haut(Grille, Coord,int);
+/**Cette fonction gère le décalage de haut en bas*/
 
+void Decale_colonne_bas(Grille, Coord,int);
+/**Cette fonction gère le décalage de bas en haut*/
 
+/*------------------------PROTOTYPE DU MOTEUR EN MODE CONSOLE--------------------------------------*/
 
-
-
+void Init_coord_grille(ptabCase);
+/**fonction qui initialise le tableau 2D de structures avec toutes les coordonnées*/
